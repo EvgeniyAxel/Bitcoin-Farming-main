@@ -8,3 +8,12 @@ body {
   font-size: 2em;
   color: gold;
 }
+.prestige-btn {
+  background: linear-gradient(to right, #8e2de2, #4a00e0);
+  color: white;
+  padding: 12px 24px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+}

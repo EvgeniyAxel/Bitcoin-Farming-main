@@ -1,21 +1,27 @@
-// Проверка переменных
-if (typeof bitcoin === 'undefined') {
-  var bitcoin = 0;
-}
-if (typeof clickPower === 'undefined') {
-  var clickPower = 1;
-}
-
 let prestigeLevel = 0;
-let prestigePoints = 0;
 
 function resetForPrestige() {
-  if (bitcoin >= 1000000) {
-    prestigePoints += Math.floor(bitcoin / 1000000);
-    prestigeLevel++;
-    bitcoin = 0;
-    clickPower = 1 + prestigeLevel * 0.2;
-    saveGame();
-    showNotification(`Престиж ${prestigeLevel}! Бонус: +${prestigeLevel * 20}%`);
-  }
+    if (game.bitcoin >= 1000000) {
+        prestigeLevel++;
+        
+        // Сохраняем исследования и достижения
+        const savedResearches = { ...game.researches };
+        const savedAchievements = JSON.parse(localStorage.getItem('achievements')) || [];
+        
+        // Сброс
+        game.bitcoin = 0;
+        game.clickPower = 1 + (prestigeLevel * 0.2);
+        Object.values(game.upgrades).forEach(u => {
+            u.owned = 0;
+            u.cost = u.baseCost;
+        });
+        
+        // Восстановление
+        game.researches = savedResearches;
+        localStorage.setItem('achievements', JSON.stringify(savedAchievements));
+        
+        saveGame();
+        showNotification(`Престиж ${prestigeLevel}! Бонус: +${prestigeLevel * 20}% к доходу`);
+        updateUI();
+    }
 }

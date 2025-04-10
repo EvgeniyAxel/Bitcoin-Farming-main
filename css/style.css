@@ -1,19 +1,82 @@
 body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  padding: 20px;
+    font-family: 'Arial', sans-serif;
+    background: #121212;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+}
+
+.game-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.main-panel {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
 }
 
 #bitcoin-counter {
-  font-size: 2em;
-  color: gold;
+    font-size: 2.5em;
+    color: gold;
+    margin: 10px 0;
 }
-.prestige-btn {
-  background: linear-gradient(to right, #8e2de2, #4a00e0);
-  color: white;
-  padding: 12px 24px;
-  margin-top: 20px;
-  border: none;
-  border-radius: 25px;
-  font-weight: bold;
+
+.mine-btn {
+    background: linear-gradient(to right, #f7931a, #ffcc00);
+    color: #000;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.mine-btn:active {
+    transform: scale(0.95);
+}
+
+.upgrades-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.upgrade {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid gold;
+    border-radius: 10px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.upgrade:hover {
+    background: rgba(255, 215, 0, 0.2);
+}
+
+.progress-container {
+    margin: 30px 0;
+}
+
+.progress-bar {
+    height: 20px;
+    background: #333;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(to right, #f7931a, #ffcc00);
+    width: 0%;
+    transition: width 0.5s;
+}
+
+.notification {
+    /* Стили уведомлений */
 }

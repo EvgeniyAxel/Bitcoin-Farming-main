@@ -1,7 +1,3 @@
-// Инициализация переменных
-let bitcoin = 0;
-let clickPower = 1;
-
 // ===== Переменные ===== //
 let bitcoin = 0;
 let clickPower = 1;
@@ -24,7 +20,7 @@ function loadGame() {
     
     // Оффлайн-доход
     const offlineTime = Date.now() - (save.lastPlay || 0);
-    if (offlineTime > 5000) { // 5+ сек
+    if (offlineTime > 5000) {
       const earned = Math.floor(offlineTime / 1000 * clickPower * 0.3);
       bitcoin += earned;
       showNotification(`Оффлайн доход: +${earned} BTC!`);
@@ -32,21 +28,21 @@ function loadGame() {
   }
 }
 
-// Загрузка при старте
-window.addEventListener('load', loadGame);
-// Автосохранение каждые 30 сек
-setInterval(saveGame, 30000);
-
-// Функция клика
+// ===== Основные функции ===== //
 function mineBitcoin() {
   bitcoin += clickPower;
   updateUI();
-  createParticles(event.clientX, event.clientY); // Партиклы
-  animateButton(event.target); // Анимация кнопки
+  createParticles(event.clientX, event.clientY);
+  animateButton(event.target);
   saveGame();
 }
 
-// Обновление интерфейса
 function updateUI() {
   document.getElementById('bitcoin-counter').textContent = bitcoin;
 }
+
+// Инициализация
+document.addEventListener('DOMContentLoaded', function() {
+  loadGame();
+  setInterval(saveGame, 30000);
+});

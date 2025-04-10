@@ -1,30 +1,32 @@
-let prestigeLevel = 0;
-
-function resetForPrestige() {
-    if (game.bitcoin >= 1000000) {
+function resetPrestige() {
+    if (money >= 1000000) {
         prestigeLevel++;
         
-        // Сохраняем только исследования
-        const savedResearches = { ...game.researches };
+        // Бонус за престиж
+        const bonus = 1 + (prestigeLevel * 0.2);
         
-        // Сброс прогресса
-        game.bitcoin = 0;
-        game.clickPower = 1 + (prestigeLevel * 0.2);
+        // Сброс с сохранением некоторых улучшений
+        money = 0;
+        clickPower = 1 * bonus;
+        passiveIncome = 0;
         
-        // Сброс улучшений
-        for (const upgrade of Object.values(game.upgrades)) {
-            upgrade.owned = 0;
-            upgrade.cost = upgrade.baseCost;
-        }
+        // Сброс улучшений (кроме премиум)
+        upgrades.click.forEach(u => {
+            if (!u.premium) {
+                u.owned = 0;
+                u.cost = u.baseCost;
+            }
+        });
         
-        // Восстановление исследований
-        game.researches = savedResearches;
+        upgrades.passive.forEach(u => {
+            if (!u.premium) {
+                u.owned = 0;
+                u.cost = u.baseCost;
+            }
+        });
         
-        saveGame();
-        showNotification(`Престиж ${prestigeLevel}! Бонус: +${prestigeLevel * 20}% к доходу`);
-        renderUpgrades();
         updateUI();
-    } else {
-        showNotification(`Нужно 1,000,000 BTC для престижа!`);
+        renderUpgrades();
+        showNotification(`Престиж ${prestigeLevel}! Бонус: +${prestigeLevel * 20}% к доходу`);
     }
 }

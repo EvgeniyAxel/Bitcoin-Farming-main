@@ -101,3 +101,64 @@
     transform: scale(1.02);
     box-shadow: 0 0 20px #8e2de2;
 }
+
+/* Стили вкладок */
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #444;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    color: #ccc;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.tab-btn.active {
+    color: gold;
+    border-bottom: 3px solid gold;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Сетка улучшений */
+.upgrades-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.upgrade-card {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid gold;
+    border-radius: 10px;
+    padding: 15px;
+    transition: all 0.3s;
+}
+
+.upgrade-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+}
+
+.upgrade-card h4 {
+    color: gold;
+    margin-top: 0;
+}
+
+.upgrade-card .cost {
+    font-weight: bold;
+    color: #4CAF50;
+}

@@ -3,73 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitcoin Farmer PRO</title>
+    <title>Долларовый Магнат</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/effects.css">
     <style>
         body {
-            background: url('https://images.unsplash.com/photo-1620288627223-53302f4e8c74?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
             background-size: cover;
-            color: white;
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        
-        .game-container {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            backdrop-filter: blur(5px);
         }
     </style>
 </head>
 <body>
     <div class="game-container">
-        <h1>Bitcoin Farmer PRO</h1>
-        
-        <!-- Основная панель -->
-        <div class="main-panel">
-            <div id="bitcoin-counter">0 BTC</div>
-            <button onclick="mineBitcoin()" class="mine-btn">⛏️ Mine BTC</button>
+        <!-- Вкладки -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('main')">Главная</button>
+            <button class="tab-btn" onclick="openTab('upgrades')">Улучшения</button>
+        </div>
+
+        <!-- Основная вкладка -->
+        <div id="main-tab" class="tab-content active">
+            <h1>Долларовый Магнат</h1>
+            <div id="money-counter">$0</div>
+            <button onclick="clickDollar()" class="click-btn">💰 Заработать</button>
+            
             <div class="stats">
-                <div>Мощность: <span id="power-display">1 BTC/клик</span></div>
-                <div>Автодоход: <span id="auto-income">0 BTC/сек</span></div>
-                <div>Улучшений: <span id="upgrades-count">0</span></div>
+                <p>Доход за клик: <span id="click-power">$1</span></p>
+                <p>Пассивный доход: <span id="passive-income">$0/сек</span></p>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progress" class="progress"></div>
+                </div>
+                <p>До престижа: <span id="prestige-progress">0%</span></p>
+            </div>
+
+            <button onclick="resetPrestige()" class="prestige-btn">Престиж ($1M)</button>
+        </div>
+
+        <!-- Вкладка улучшений -->
+        <div id="upgrades-tab" class="tab-content">
+            <h2>Улучшения</h2>
+            <div class="upgrades-grid" id="click-upgrades">
+                <h3>Доход за клик</h3>
+                <!-- Улучшения будут добавляться через JS -->
+            </div>
+            
+            <div class="upgrades-grid" id="passive-upgrades">
+                <h3>Пассивный доход</h3>
+                <!-- Улучшения будут добавляться через JS -->
             </div>
         </div>
-
-        <!-- Прогресс-бар -->
-        <div class="progress-container">
-            <div class="progress-bar">
-                <div id="progress" class="progress"></div>
-            </div>
-            <p>До престижа: <span id="prestige-progress">0%</span></p>
-        </div>
-
-        <!-- Контейнер улучшений -->
-        <div class="upgrades-container" id="upgrades-container">
-            <h3>Улучшения</h3>
-            <!-- Сюда будут добавляться улучшения динамически -->
-        </div>
-
-        <!-- Кнопка престижа -->
-        <button onclick="resetForPrestige()" class="prestige-btn">Престиж (1M BTC)</button>
     </div>
 
-    <script src="js/script.js"></script>
+    <script src="js/game.js"></script>
     <script src="js/prestige.js"></script>
     <script src="js/effects.js"></script>
-    
-    <script>
-        // Инициализация при загрузке
-        document.addEventListener('DOMContentLoaded', function() {
-            loadGame();
-            renderUpgrades();
-        });
-    </script>
 </body>
 </html>

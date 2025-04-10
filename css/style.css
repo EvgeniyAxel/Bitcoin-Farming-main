@@ -1,27 +1,9 @@
-body {
-    font-family: 'Arial', sans-serif;
-    background: #121212;
-    color: #fff;
-    text-align: center;
-    padding: 20px;
-}
-
-.game-container {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.main-panel {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
+/* Основные стили */
 #bitcoin-counter {
     font-size: 2.5em;
     color: gold;
-    margin: 10px 0;
+    margin: 20px 0;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .mine-btn {
@@ -32,18 +14,21 @@ body {
     font-size: 1.2em;
     border-radius: 50px;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: all 0.3s;
+    margin: 10px 0;
 }
 
-.mine-btn:active {
-    transform: scale(0.95);
+.mine-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #f7931a;
 }
 
+/* Контейнер улучшений */
 .upgrades-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 15px;
-    margin: 20px 0;
+    margin: 30px 0;
 }
 
 .upgrade {
@@ -57,8 +42,10 @@ body {
 
 .upgrade:hover {
     background: rgba(255, 215, 0, 0.2);
+    transform: translateY(-5px);
 }
 
+/* Прогресс-бар */
 .progress-container {
     margin: 30px 0;
 }
@@ -77,28 +64,21 @@ body {
     transition: width 0.5s;
 }
 
-.notification {
-    /* Стили уведомлений */
-}
-/* Стили для изображений */
-.btc-logo {
-    width: 100px;
-    height: 100px;
-    margin: 20px auto;
-    display: block;
-    animation: pulse 2s infinite;
-}
-
-.upgrade-icon {
-    width: 50px;
-    height: 50px;
-    margin: 0 auto 10px;
-    display: block;
+/* Кнопка престижа */
+.prestige-btn {
+    background: linear-gradient(to right, #8e2de2, #4a00e0);
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+    margin-top: 20px;
 }
 
-/* Анимация пульсации */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+.prestige-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px #8e2de2;
 }

@@ -1,43 +1,41 @@
-// Партиклы
 function createParticles(x, y) {
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 10; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
         p.style.left = `${x}px`;
         p.style.top = `${y}px`;
         p.style.background = `hsl(${Math.random() * 60 + 30}, 100%, 50%)`;
         document.body.appendChild(p);
+        
+        // Анимация
+        p.animate([
+            { transform: 'translate(0, 0)', opacity: 1 },
+            { transform: `translate(${Math.random() * 100 - 50}px, ${Math.random() * -100 - 50}px)`, opacity: 0 }
+        ], {
+            duration: 1000,
+            easing: 'cubic-bezier(0,0.2,0.8,1)'
+        });
+        
         setTimeout(() => p.remove(), 1000);
     }
 }
 
-// Анимации
-function animateUpgrade(element) {
-    element.style.transform = 'scale(1.05)';
-    element.style.boxShadow = '0 0 15px gold';
-    setTimeout(() => {
-        element.style.transform = '';
-        element.style.boxShadow = '';
-    }, 300);
-}
-
-// Уведомления
 function showNotification(text) {
     const note = document.createElement('div');
     note.className = 'notification';
     note.textContent = text;
     document.body.appendChild(note);
-    setTimeout(() => note.remove(), 3000);
-}
-
-// Достижения
-function showAchievement(name) {
-    const popup = document.createElement('div');
-    popup.className = 'achievement-popup';
-    popup.innerHTML = `
-        <div class="achievement-icon">🏆</div>
-        <h3>${name}</h3>
-    `;
-    document.body.appendChild(popup);
-    setTimeout(() => popup.remove(), 3000);
+    
+    note.animate([
+        { opacity: 0, transform: 'translateY(20px)' },
+        { opacity: 1, transform: 'translateY(0)' }
+    ], { duration: 300 });
+    
+    setTimeout(() => {
+        note.animate([
+            { opacity: 1 },
+            { opacity: 0 }
+        ], { duration: 500, easing: 'ease-out' });
+        setTimeout(() => note.remove(), 500);
+    }, 2500);
 }

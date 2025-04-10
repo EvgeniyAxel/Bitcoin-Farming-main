@@ -119,4 +119,36 @@ document.addEventListener('DOMContentLoaded', () => {
         saveGame();
     }, 100);
     setInterval(saveGame, 30000);
-});
+}
+const upgrades = {
+    gpu: {
+        name: "Видеокарта",
+        icon: "assets/images/gpu.png",
+        cost: 1000,
+        power: 0.5
+    },
+    farm: {
+        name: "Ферма",
+        icon: "assets/images/farm.png",
+        cost: 5000,
+        power: 2
+    }
+};
+
+function renderUpgrades() {
+    const container = document.querySelector('.upgrades-container');
+    container.innerHTML = '';
+    
+    Object.entries(upgrades).forEach(([id, upgrade]) => {
+        const div = document.createElement('div');
+        div.className = 'upgrade';
+        div.innerHTML = `
+            <img src="${upgrade.icon}" alt="${upgrade.name}" class="upgrade-icon">
+            <h4>${upgrade.name}</h4>
+            <p>+${upgrade.power} BTC/сек</p>
+            <p class="cost">${upgrade.cost} BTC</p>
+        `;
+        div.addEventListener('click', () => buyUpgrade(id));
+        container.appendChild(div);
+    });
+}

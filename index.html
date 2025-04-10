@@ -3,41 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitcoin Farmer PRO</title>
+    <title>Bitcoin Farm</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/effects.css">
+    <style>
+        body {
+            background: url('assets/images/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
 </head>
 <body>
     <div class="game-container">
-        <h1>Bitcoin Farmer PRO</h1>
+        <img src="assets/images/bitcoin.png" alt="Bitcoin" class="btc-logo">
         
-        <div class="main-panel">
-            <div id="bitcoin-counter">0 BTC</div>
-            <button onclick="mineBitcoin()" class="mine-btn">Mine BTC</button>
-            <div class="stats">
-                <div>Мощность: <span id="power-display">1 BTC/клик</span></div>
-                <div>Автодоход: <span id="auto-income">0 BTC/сек</span></div>
-            </div>
-        </div>
-
-        <div class="progress-container">
-            <div class="progress-bar">
-                <div id="progress" class="progress"></div>
-            </div>
-            <p>До престижа: <span id="prestige-progress">0%</span></p>
-        </div>
-
-        <div class="upgrades-container">
-            <h3>Улучшения</h3>
-            <div class="upgrade" onclick="buyUpgrade('gpu')">
-                <h4>Видеокарта</h4>
-                <p>+0.5 BTC/сек</p>
-                <p class="cost" id="gpu-cost">1000 BTC</p>
-            </div>
-            <!-- Другие улучшения -->
-        </div>
-
-        <button onclick="resetForPrestige()" class="prestige-btn">Престиж (1M BTC)</button>
+        <!-- Кнопка майнинга с иконкой -->
+        <button onclick="mineBitcoin()" class="mine-btn">
+            <img src="assets/images/pickaxe.png" alt="Mine"> Mine BTC
+        </button>
     </div>
 
     <script src="js/script.js"></script>

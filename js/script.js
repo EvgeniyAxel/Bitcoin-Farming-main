@@ -1,89 +1,44 @@
-// ===== Глобальные переменные =====
+// Глобальный объект игры
 const game = {
     bitcoin: 0,
     clickPower: 1,
     totalClicks: 0,
     upgrades: {
-        gpu: { owned: 0, baseCost: 1000, cost: 1000, power: 0.5 },
-        farm: { owned: 0, baseCost: 5000, cost: 5000, power: 2 },
-        asic: { owned: 0, baseCost: 15000, cost: 15000, power: 10 }
+        gpu: { 
+            name: "Видеокарта", 
+            owned: 0, 
+            baseCost: 1000, 
+            cost: 1000, 
+            power: 0.5,
+            description: "+0.5 BTC/сек"
+        },
+        farm: { 
+            name: "Майнинг-ферма", 
+            owned: 0, 
+            baseCost: 5000, 
+            cost: 5000, 
+            power: 2,
+            description: "+2 BTC/сек"
+        },
+        asic: { 
+            name: "ASIC-майнер", 
+            owned: 0, 
+            baseCost: 20000, 
+            cost: 20000, 
+            power: 5,
+            description: "+5 BTC/сек"
+        }
     },
-    researches: {
-        doubleClick: { bought: false, cost: 20000 }
-    },
-    lastDaily: null,
-    dailyStreak: 0
+    lastPlay: Date.now()
 };
 
-// ===== Система сохранения =====
-function saveGame() {
-    localStorage.setItem('btcSave', JSON.stringify({
-        ...game,
-        lastPlay: Date.now()
-    }));
-}
-
-function loadGame() {
-    const save = JSON.parse(localStorage.getItem('btcSave'));
-    if (save) {
-        Object.assign(game, save);
-        updateUI();
-        
-        // Оффлайн-доход
-        const offlineSeconds = Math.floor((Date.now() - (save.lastPlay || 0)) / 1000);
-        if (offlineSeconds > 5) {
-            const earned = calculateOfflineIncome(offlineSeconds);
-            game.bitcoin += earned;
-            showNotification(`Оффлайн доход: +${earned} BTC за ${Math.floor(offlineSeconds)} сек`);
-        }
-    }
-    checkDailyReward();
-}
-
-// ===== Основные функции =====
+// Основные функции
 function mineBitcoin() {
+    game.bitcoin += game.clickPower;
     game.totalClicks++;
-    
-    // Основной доход
-    let earned = game.clickPower;
-    
-    // Критический удар (10% шанс)
-    if (Math.random() < 0.1) {
-        earned *= 3;
-        showNotification("Критический удар! x3 BTC");
-    }
-    
-    game.bitcoin += earned;
     updateUI();
     createParticles(event.clientX, event.clientY);
     saveGame();
-    checkAchievements();
-}
-
-function updateUI() {
-    // Обновляем цифры
-    document.getElementById('bitcoin-counter').textContent = `${game.bitcoin} BTC`;
-    document.getElementById('power-display').textContent = `${game.clickPower} BTC/клик`;
-    
-    // Прогресс-бар
-    const progressPercent = Math.min((game.bitcoin / 1000000) * 100, 100);
-    document.getElementById('progress').style.width = `${progressPercent}%`;
-    document.getElementById('prestige-progress').textContent = `${progressPercent.toFixed(1)}%`;
-    
-    // Автодоход
-    const autoIncome = calculateAutoIncome();
-    document.getElementById('auto-income').textContent = `${autoIncome} BTC/сек`;
-}
-
-// ===== Новые системы =====
-function calculateAutoIncome() {
-    return Object.values(game.upgrades).reduce((sum, upgrade) => {
-        return sum + (upgrade.owned * upgrade.power);
-    }, 0);
-}
-
-function calculateOfflineIncome(seconds) {
-    return Math.floor(seconds * calculateAutoIncome());
 }
 
 function buyUpgrade(type) {
@@ -94,61 +49,81 @@ function buyUpgrade(type) {
         upgrade.cost = Math.floor(upgrade.baseCost * Math.pow(1.15, upgrade.owned));
         updateUI();
         saveGame();
-        animateUpgrade(document.getElementById(`${type}-cost`).parentElement);
+        renderUpgrades();
+    } else {
+        showNotification("Недостаточно BTC!");
     }
 }
 
-function checkDailyReward() {
-    const today = new Date().toDateString();
-    if (game.lastDaily !== today) {
-        game.dailyStreak++;
-        const reward = 100 * game.dailyStreak;
-        game.bitcoin += reward;
-        game.lastDaily = today;
-        showNotification(`Ежедневная награда: +${reward} BTC (серия ${game.dailyStreak})`);
-        saveGame();
-    }
+// Система сохранения
+function saveGame() {
+    game.lastPlay = Date.now();
+    localStorage.setItem('btcSave', JSON.stringify(game));
 }
 
-// ===== Инициализация =====
-document.addEventListener('DOMContentLoaded', () => {
-    loadGame();
-    setInterval(() => {
-        game.bitcoin += calculateAutoIncome() / 10;
+function loadGame() {
+    const save = JSON.parse(localStorage.getItem('btcSave'));
+    if (save) {
+        Object.assign(game, save);
         updateUI();
-        saveGame();
-    }, 100);
-    setInterval(saveGame, 30000);
-}
-const upgrades = {
-    gpu: {
-        name: "Видеокарта",
-        icon: "assets/images/gpu.png",
-        cost: 1000,
-        power: 0.5
-    },
-    farm: {
-        name: "Ферма",
-        icon: "assets/images/farm.png",
-        cost: 5000,
-        power: 2
+        
+        // Оффлайн-доход
+        const offlineTime = (Date.now() - game.lastPlay) / 1000;
+        if (offlineTime > 5) {
+            const earned = calculateAutoIncome() * offlineTime * 0.3;
+            game.bitcoin += earned;
+            showNotification(`Оффлайн доход: +${earned.toFixed(1)} BTC`);
+        }
     }
-};
+}
+
+// Вспомогательные функции
+function calculateAutoIncome() {
+    let income = 0;
+    for (const upgrade of Object.values(game.upgrades)) {
+        income += upgrade.owned * upgrade.power;
+    }
+    return income;
+}
+
+function updateUI() {
+    // Обновление счетчиков
+    document.getElementById('bitcoin-counter').textContent = `${Math.floor(game.bitcoin)} BTC`;
+    document.getElementById('power-display').textContent = `${game.clickPower} BTC/клик`;
+    document.getElementById('auto-income').textContent = `${calculateAutoIncome().toFixed(1)} BTC/сек`;
+    
+    // Прогресс до престижа
+    const progressPercent = Math.min((game.bitcoin / 1000000) * 100, 100);
+    document.getElementById('progress').style.width = `${progressPercent}%`;
+    document.getElementById('prestige-progress').textContent = `${progressPercent.toFixed(1)}%`;
+}
 
 function renderUpgrades() {
-    const container = document.querySelector('.upgrades-container');
-    container.innerHTML = '';
+    const container = document.getElementById('upgrades-container');
+    container.innerHTML = '<h3>Улучшения</h3>';
     
-    Object.entries(upgrades).forEach(([id, upgrade]) => {
-        const div = document.createElement('div');
-        div.className = 'upgrade';
-        div.innerHTML = `
-            <img src="${upgrade.icon}" alt="${upgrade.name}" class="upgrade-icon">
+    for (const [type, upgrade] of Object.entries(game.upgrades)) {
+        const upgradeElement = document.createElement('div');
+        upgradeElement.className = 'upgrade';
+        upgradeElement.innerHTML = `
             <h4>${upgrade.name}</h4>
-            <p>+${upgrade.power} BTC/сек</p>
-            <p class="cost">${upgrade.cost} BTC</p>
+            <p>${upgrade.description}</p>
+            <p>Куплено: ${upgrade.owned}</p>
+            <p class="cost">Цена: ${Math.floor(upgrade.cost)} BTC</p>
         `;
-        div.addEventListener('click', () => buyUpgrade(id));
-        container.appendChild(div);
-    });
+        upgradeElement.onclick = () => buyUpgrade(type);
+        container.appendChild(upgradeElement);
+    }
 }
+
+// Автоматический доход
+setInterval(() => {
+    const autoIncome = calculateAutoIncome() / 10;
+    if (autoIncome > 0) {
+        game.bitcoin += autoIncome;
+        updateUI();
+    }
+}, 100);
+
+// Автосохранение
+setInterval(saveGame, 30000);

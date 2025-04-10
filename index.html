@@ -3,28 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitcoin Farm</title>
+    <title>Bitcoin Farmer PRO</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/effects.css">
     <style>
         body {
-            background: url('assets/images/background.jpg') no-repeat center center fixed;
+            background: url('https://images.unsplash.com/photo-1620288627223-53302f4e8c74?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
             background-size: cover;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .game-container {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            backdrop-filter: blur(5px);
         }
     </style>
 </head>
 <body>
     <div class="game-container">
-        <img src="assets/images/bitcoin.png" alt="Bitcoin" class="btc-logo">
+        <h1>Bitcoin Farmer PRO</h1>
         
-        <!-- Кнопка майнинга с иконкой -->
-        <button onclick="mineBitcoin()" class="mine-btn">
-            <img src="assets/images/pickaxe.png" alt="Mine"> Mine BTC
-        </button>
+        <!-- Основная панель -->
+        <div class="main-panel">
+            <div id="bitcoin-counter">0 BTC</div>
+            <button onclick="mineBitcoin()" class="mine-btn">⛏️ Mine BTC</button>
+            <div class="stats">
+                <div>Мощность: <span id="power-display">1 BTC/клик</span></div>
+                <div>Автодоход: <span id="auto-income">0 BTC/сек</span></div>
+                <div>Улучшений: <span id="upgrades-count">0</span></div>
+            </div>
+        </div>
+
+        <!-- Прогресс-бар -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div id="progress" class="progress"></div>
+            </div>
+            <p>До престижа: <span id="prestige-progress">0%</span></p>
+        </div>
+
+        <!-- Контейнер улучшений -->
+        <div class="upgrades-container" id="upgrades-container">
+            <h3>Улучшения</h3>
+            <!-- Сюда будут добавляться улучшения динамически -->
+        </div>
+
+        <!-- Кнопка престижа -->
+        <button onclick="resetForPrestige()" class="prestige-btn">Престиж (1M BTC)</button>
     </div>
 
     <script src="js/script.js"></script>
     <script src="js/prestige.js"></script>
     <script src="js/effects.js"></script>
+    
+    <script>
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            loadGame();
+            renderUpgrades();
+        });
+    </script>
 </body>
 </html>
